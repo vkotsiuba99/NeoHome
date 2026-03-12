@@ -1,0 +1,97 @@
+services:
+  cassandra:
+    image: cassandra:5.0
+    container_name: neohome_cassandra
+    environment:
+      CASSANDRA_CLUSTER_NAME: neohome
+      CASSANDRA_DC: datacenter1
+    ports:
+      - "9042:9042"
+    volumes:
+      - neohome_cassandra_data:/var/lib/cassandra
+    healthcheck:
+      test: ["CMD-SHELL", "cqlsh -e \"describe keyspaces\""]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+      start_period: 40s
+    restart: unless-stopped
+
+  cassandra-init:
+    image: cassandra:5.0
+    container_name: neohome_cassandra_init
+    depends_on:
+      cassandra:
+        condition: service_healthy
+    volumes:
+      - ./back/db/cassandra/init.sql:/init/init.sql:ro
+    entrypoint:
+      - /bin/sh
+      - -c
+      - |
+        until cqlsh cassandra 9042 -f /init/init.sql; do
+          echo "waiting for cassandra..."
+          sleep 5
+        done
+    restart: "no"
+
+  mqtt:
+    image: eclipse-mosquitto:2.0
+    container_name: neohome_mqtt
+    ports:
+      - "127.0.0.1:1883:1883"
+      - "127.0.0.1:9001:9001"
+    volumes:
+      - ./back/deploy/mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
+    healthcheck:
+      test: ["CMD-SHELL", "mosquitto_pub -h localhost -p 1883 -t neohome/health -m ping -q 0 >/dev/null 2>&1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    restart: unless-stopped
+
+  api:
+    build:
+      context: .
+      dockerfile: back/Dockerfile
+    container_name: neohome_api
+    env_file:
+      - .env
+    environment:
+      HTTP_HOST: 0.0.0.0
+      HTTP_PORT: 3434
+      CASSANDRA_HOSTS: cassandra
+      CASSANDRA_PORT: 9042
+      CASSANDRA_KEYSPACE: neohome
+      CASSANDRA_DATACENTER: datacenter1
+      MQTT_BROKER: tcp://mqtt:1883
+    ports:
+      - "3434:3434"
+    depends_on:
+      cassandra-init:
+        condition: service_completed_successfully
+      mqtt:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q --spider http://localhost:3434/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    restart: unless-stopped
+
+  web:
+    build:
+      context: .
+      dockerfile: client/Dockerfile
+    container_name: neohome_web
+    ports:
+      - "5173:80"
+    depends_on:
+      api:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  neohome_cassandra_data:

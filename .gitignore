@@ -1,0 +1,95 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Logs
+*.log
+logs/
+tmp/
+
+# Environment files
+.env
+
+# Go
+bin/
+dist/
+build/
+coverage.out
+*.test
+*.out
+
+# Go workspaces
+go.work
+go.work.sum
+
+# Test artifacts
+coverage/
+test-results/
+playwright-report/
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Frontend build artifacts
+client/dist/
+client/.angular/
+client/.cache/
+client/coverage/
+client/test-results/
+client/playwright-report/
+client/tsconfig.tsbuildinfo
+
+#  artifacts
+/coverage/
+/coverage.out
+/repo/
+/repo.out
+/cover
+
+# Generated archives and binaries
+*.exe
+*.dll
+*.so
+*.dylib
+*.zip
+*.tar
+*.gz
+
+# Docker override/local files
+docker-compose.override.yml
+
+# Terraform
+**/.terraform/
+**/.terraform.lock.hcl
+*.tfstate
+*.tfstate.*
+crash.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Kubernetes / temp configs
+*.local.yaml
+*.local.yml
+
+# Secrets / keys
+*.pem
+*.key
+*.crt
+id_rsa
+id_rsa.pub
+*.p12
+*.pfx
+
+.gocache/

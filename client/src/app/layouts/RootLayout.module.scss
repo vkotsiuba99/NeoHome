@@ -1,0 +1,50 @@
+.shell {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #f7f8fb 0%, #eef2f8 100%);
+}
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  backdrop-filter: blur(6px);
+  background: rgba(255, 255, 255, 0.9);
+  border-bottom: 1px solid #dde3ef;
+}
+
+.headerInner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 68px;
+}
+
+.logo {
+  margin: 0;
+  font-size: 1.25rem;
+  color: var(--color-text);
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.link {
+  text-decoration: none;
+  padding: 0.45rem 0.7rem;
+  border-radius: 8px;
+  color: var(--color-muted);
+  font-weight: 600;
+
+  &:global(.active) {
+    color: var(--color-text);
+    background: #eaf1ff;
+  }
+}
+
+.main {
+  padding: 1.5rem 0 2rem;
+}

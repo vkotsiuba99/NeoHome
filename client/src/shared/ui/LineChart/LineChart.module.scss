@@ -1,0 +1,21 @@
+.wrap {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.chart {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  border: 1px solid var(--color-border);
+  background: #fff;
+}
+
+.bg {
+  fill: #fcfdff;
+}
+
+.caption {
+  font-size: 0.8rem;
+  color: var(--color-muted);
+}

@@ -1,0 +1,50 @@
+@use "./tokens.scss";
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family:
+    "Segoe UI",
+    "SF Pro Text",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Helvetica Neue",
+    sans-serif;
+  color: var(--color-text);
+  background: #eef2f8;
+}
+
+a {
+  color: inherit;
+}
+
+.container {
+  width: min(1100px, 100% - 2rem);
+  margin: 0 auto;
+}
+
+.page {
+  display: grid;
+  gap: 1rem;
+}
+
+.page-center {
+  min-height: 55vh;
+  display: grid;
+  place-items: center;
+}
+
+.grid-2 {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+.muted {
+  color: var(--color-muted);
+}
