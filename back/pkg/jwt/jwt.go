@@ -34,7 +34,7 @@ func NewToken(user domain.User, duration time.Duration, secret []byte) (string, 
 	expirationTime := now.Add(duration)
 
 	claims := jwt.MapClaims{
-		claimKeyUserID: user.UserID,
+		claimKeyUserID: strconv.FormatInt(user.UserID, 10),
 		claimKeyRole:   user.Role,
 		claimKeyExp:    expirationTime.Unix(),
 		claimKeyIat:    now.Unix(),

@@ -1,5 +1,7 @@
 package handler
 
+import "encoding/json"
+
 type (
 	CreateUserReq struct {
 		Email    string `json:"email"`
@@ -145,8 +147,8 @@ type (
 
 type (
 	telemetryPayloadBody struct {
-		DeviceID       int64   `json:"deviceId"`
-		RecordedAt     []byte  `json:"recordedAt"`
+		DeviceID       int64            `json:"deviceId"`
+		RecordedAt     json.RawMessage  `json:"recordedAt"`
 		MetricType     string  `json:"metricType"`
 		MetricValue    float64 `json:"metricValue"`
 		Unit           string  `json:"unit"`

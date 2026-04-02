@@ -93,3 +93,4 @@ id_rsa.pub
 *.pfx
 
 .gocache/
+.codebase/

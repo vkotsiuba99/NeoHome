@@ -6,12 +6,12 @@ type Props = React.InputHTMLAttributes<HTMLInputElement> & {
   error?: string;
 };
 
-export const Input: React.FC<Props> = ({ label, error, className, ...props }) => {
+export const Input = React.forwardRef<HTMLInputElement, Props>(({ label, error, className, ...props }, ref) => {
   return (
     <label className={styles.wrap}>
       {label ? <span className={styles.label}>{label}</span> : null}
-      <input className={`${styles.input} ${className ?? ""}`} {...props} />
+      <input ref={ref} className={`${styles.input} ${className ?? ""}`} {...props} />
       {error ? <span className={styles.error}>{error}</span> : null}
     </label>
   );
-};
+});

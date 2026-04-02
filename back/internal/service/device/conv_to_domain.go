@@ -48,7 +48,7 @@ func (c *ConvToDamain) CreateToDomainDevice(cmd domain.DeviceCreate, deviceID in
 func (c *ConvToDamain) CreateToDomainDeviceAuto(cmd domain.DeviceCreate) (domain.Device, error) {
 	nextID := func() (int64, error) {
 		for {
-			rawID, err := rand.Int(rand.Reader, big.NewInt(math.MaxInt64))
+			rawID, err := rand.Int(rand.Reader, big.NewInt(1<<53))
 			if err != nil {
 				return 0, err
 			}

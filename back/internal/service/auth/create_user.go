@@ -3,7 +3,6 @@ package auth
 import (
 	"context"
 	"crypto/rand"
-	"math"
 	"math/big"
 	"strings"
 	"time"
@@ -36,7 +35,7 @@ func (svc *Service) CreateUser(ctx context.Context, cmd domain.Register) (domain
 
 	var userID int64
 	for userID <= 0 {
-		rawID, idErr := rand.Int(rand.Reader, big.NewInt(math.MaxInt64))
+		rawID, idErr := rand.Int(rand.Reader, big.NewInt(1<<53))
 		if idErr != nil {
 			return domain.User{}, idErr
 		}
