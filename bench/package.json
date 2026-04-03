@@ -1,0 +1,17 @@
+{
+  "name": "neohome-bench",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "bench": "node run.js",
+    "bench:write": "node run.js --scenario write-telemetry",
+    "bench:alerts": "node run.js --scenario write-with-alerts",
+    "bench:read": "node run.js --scenario read-telemetry",
+    "bench:latest": "node run.js --scenario read-latest",
+    "bench:mixed": "node run.js --scenario mixed-workload"
+  },
+  "dependencies": {
+    "autocannon": "^8.0.0"
+  }
+}
