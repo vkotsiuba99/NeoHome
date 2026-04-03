@@ -31,7 +31,7 @@ func NewRouter(hand *Handler, cfg transport.Config, log *slog.Logger, jwtSecret 
 	telemetry.HandleFunc("", hand.Telemetry).Methods(http.MethodPost)
 	telemetry.HandleFunc("/mqtt", hand.TelemetryMQTT).Methods(http.MethodPost)
 
-	private := api.NewRoute().Subrouter()
+	private := api.PathPrefix("").Subrouter()
 	private.Use(middleware.Auth(jwtSecret, log))
 
 	users := private.PathPrefix("/users").Subrouter()

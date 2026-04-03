@@ -49,7 +49,7 @@ func (repo *AuthRepo) CreateUser(ctx context.Context, user User) error {
 	applied, err := session.Query(
 		`INSERT INTO users_by_id (user_id, email, login, phone, role, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?) IF NOT EXISTS`,
 		user.UserID, user.Email, user.Login, user.Phone, user.Role, user.CreatedAt, user.UpdatedAt,
-	).WithContext(ctx).ScanCAS()
+	).WithContext(ctx).MapScanCAS(map[string]interface{}{})
 	if err != nil {
 		return err
 	}
@@ -60,7 +60,7 @@ func (repo *AuthRepo) CreateUser(ctx context.Context, user User) error {
 	applied, err = session.Query(
 		`INSERT INTO users_by_email (email, user_id, login, phone, password_hash, role, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?) IF NOT EXISTS`,
 		user.Email, user.UserID, user.Login, user.Phone, user.PasswordHash, user.Role, user.CreatedAt, user.UpdatedAt,
-	).WithContext(ctx).ScanCAS()
+	).WithContext(ctx).MapScanCAS(map[string]interface{}{})
 	if err != nil {
 		if cleanupErr := session.Query(`DELETE FROM users_by_id WHERE user_id = ?`, user.UserID).WithContext(ctx).Exec(); cleanupErr != nil {
 			repo.logger().Warn("rollback users_by_id failed", "error", cleanupErr.Error(), "user_id", user.UserID)
@@ -77,7 +77,7 @@ func (repo *AuthRepo) CreateUser(ctx context.Context, user User) error {
 	applied, err = session.Query(
 		`INSERT INTO users_by_login (login, user_id, email, phone, password_hash, role, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?) IF NOT EXISTS`,
 		user.Login, user.UserID, user.Email, user.Phone, user.PasswordHash, user.Role, user.CreatedAt, user.UpdatedAt,
-	).WithContext(ctx).ScanCAS()
+	).WithContext(ctx).MapScanCAS(map[string]interface{}{})
 	if err != nil {
 		if cleanupErr := session.Query(`DELETE FROM users_by_email WHERE email = ?`, user.Email).WithContext(ctx).Exec(); cleanupErr != nil {
 			repo.logger().Warn("rollback users_by_email failed", "error", cleanupErr.Error(), "email", user.Email)

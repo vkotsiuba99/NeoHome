@@ -112,7 +112,7 @@ func (c *ConvToDamain) IngestToDomainTelemetryAndDevice(cmd domain.TelemetryInge
 
 	telemetryID := int64(0)
 	for telemetryID <= 0 {
-		rawID, err := rand.Int(rand.Reader, big.NewInt(math.MaxInt64))
+		rawID, err := rand.Int(rand.Reader, big.NewInt(1<<53))
 		if err != nil {
 			return domain.Telemetry{}, domain.Device{}, err
 		}

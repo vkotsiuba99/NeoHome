@@ -232,9 +232,11 @@ func (repo *DeviceRepo) PutThresholds(ctx context.Context, deviceID int64, thres
 		return ErrConflict
 	}
 
-	batch := session.NewBatch(gocql.LoggedBatch)
-	batch = batch.WithContext(ctx)
-	batch.Query(`DELETE FROM device_thresholds_by_device WHERE device_id = ?`, deviceID)
+	if err := session.Query(`DELETE FROM device_thresholds_by_device WHERE device_id = ?`, deviceID).WithContext(ctx).Exec(); err != nil {
+		return err
+	}
+
+	batch := session.NewBatch(gocql.LoggedBatch).WithContext(ctx)
 	for _, item := range thresholds {
 		batch.Query(
 			`INSERT INTO device_thresholds_by_device (device_id, metric_type, min_value, max_value, severity, updated_at) VALUES (?, ?, ?, ?, ?, ?)`,

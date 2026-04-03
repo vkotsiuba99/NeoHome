@@ -4,7 +4,6 @@ import (
 	"context"
 	"crypto/rand"
 	"fmt"
-	"math"
 	"math/big"
 	"strings"
 	"time"
@@ -34,7 +33,7 @@ func (svc *Service) makeAlerts(ctx context.Context, device domain.Device, teleme
 
 		alertID := int64(0)
 		for alertID <= 0 {
-			rawID, err := rand.Int(rand.Reader, big.NewInt(math.MaxInt64))
+			rawID, err := rand.Int(rand.Reader, big.NewInt(1<<53))
 			if err != nil {
 				return nil, err
 			}

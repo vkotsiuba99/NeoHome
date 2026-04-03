@@ -23,10 +23,14 @@ export const DevicePage = () => {
   const params = useParams<{ deviceId: string }>();
   const deviceId = Number(params.deviceId);
   const [periodKey, setPeriodKey] = useState<(typeof PERIODS)[number]["key"]>("24h");
+  const [nowMs, setNowMs] = useState(() => Date.now());
 
-  const nowMs = Date.now();
   const selectedPeriod = PERIODS.find((item) => item.key === periodKey) ?? PERIODS[0];
   const fromMs = nowMs - selectedPeriod.ms;
+
+  useEffect(() => {
+    setNowMs(Date.now());
+  }, [periodKey]);
 
   const devicesQuery = useDevices();
   const thresholdsQuery = useDeviceThresholds(deviceId);

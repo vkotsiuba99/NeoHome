@@ -6,12 +6,12 @@ type Props = React.TextareaHTMLAttributes<HTMLTextAreaElement> & {
   error?: string;
 };
 
-export const Textarea: React.FC<Props> = ({ label, error, className, ...props }) => {
+export const Textarea = React.forwardRef<HTMLTextAreaElement, Props>(({ label, error, className, ...props }, ref) => {
   return (
     <label className={styles.wrap}>
       {label ? <span className={styles.label}>{label}</span> : null}
-      <textarea className={`${styles.textarea} ${className ?? ""}`} {...props} />
+      <textarea ref={ref} className={`${styles.textarea} ${className ?? ""}`} {...props} />
       {error ? <span className={styles.error}>{error}</span> : null}
     </label>
   );
-};
+});
