@@ -30,7 +30,10 @@ const DeviceTile = ({ deviceId, title, type, room, status }: DeviceTileProps) =>
     <Card className={styles.deviceCard}>
       <div className={styles.deviceHead}>
         <div>
+          <div>
           <h3>{title}</h3>
+          <p className="muted">ID: {deviceId}</p>
+          </div>
           <p className="muted">
             {type} - {room}
           </p>
